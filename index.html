@@ -1,0 +1,1594 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bovision Bostadsbevakning</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      background-color: #FCFCFC;
+    }
+
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background-color: #093E78;
+      padding: 0 24px;
+      height: 56px;
+      display: flex;
+      align-items: center;
+    }
+
+    .header__inner {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      gap: 48px;
+    }
+
+    .header__logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      flex-shrink: 0;
+    }
+
+    .header__nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+      flex: 1;
+    }
+
+    .nav-link {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.92;
+      transition: opacity 0.15s;
+    }
+
+    .nav-link:hover { opacity: 1; }
+
+    .header__actions { margin-left: auto; flex-shrink: 0; }
+
+    .login-link {
+      color: white;
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.92;
+      transition: opacity 0.15s;
+    }
+
+    .login-link:hover { opacity: 1; }
+
+    /* ── PAGES ── */
+    .page {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 48px 24px 140px;
+      background: #FCFCFC;
+    }
+
+    .page--hidden {
+      display: none;
+    }
+
+    .page--visible {
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── SHARED LAYOUT ── */
+    .split {
+      width: 100%;
+      max-width: 800px;
+      display: grid;
+      grid-template-columns: 5fr 3fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .split__left {
+      display: flex;
+      align-items: center;
+    }
+
+    .split__right {
+      position: relative;
+      overflow: hidden;
+      background: #D6D6D6;
+      border-radius: 16px;
+      height: 400px;
+    }
+
+    .split__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    /* ── PAGE 1 ── */
+    .hero__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #FF5E00;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .hero__title {
+      font-size: clamp(20px, 2.2vw, 30px);
+      font-weight: 700;
+      color: #04182D;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+      margin-bottom: 24px;
+    }
+
+    .hero__body {
+      font-size: 16px;
+      font-weight: 400;
+      color: #3a3a3a;
+      line-height: 1.7;
+      margin-bottom: 40px;
+    }
+
+    .hero__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #093E78;
+      color: #FCFCFC;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 10px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .hero__cta:hover { background: #04182D; }
+
+    /* ── PAGE 2 ── */
+    .steps__eyebrow {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: #FF5E00;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .steps__title {
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 700;
+      color: #04182D;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      margin-bottom: 32px;
+    }
+
+    .steps__list {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-bottom: 36px;
+    }
+
+    .steps__item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .steps__num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: #093E78;
+      color: #fff;
+      font-size: 13px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    .steps__text {
+      font-size: 15px;
+      font-weight: 300;
+      color: #3a3a3a;
+      line-height: 1.65;
+    }
+
+    .steps__note {
+      font-size: 14px;
+      font-weight: 300;
+      color: #747474;
+      line-height: 1.6;
+      border-top: 1px solid #E4E9F0;
+      padding-top: 24px;
+      margin-bottom: 32px;
+    }
+
+    /* ── NAV BUTTONS ── */
+    .page__nav {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-top: 40px;
+    }
+
+    .btn-back {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: transparent;
+      color: #04182D;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 500;
+      padding: 13px 20px;
+      border-radius: 10px;
+      border: 1.5px solid #D6D6D6;
+      cursor: pointer;
+      transition: border-color 0.15s, color 0.15s;
+    }
+
+    .btn-back:hover {
+      border-color: #093E78;
+      color: #093E78;
+    }
+
+    .btn-next {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: #093E78;
+      color: #FCFCFC;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 10px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+
+    .btn-next:hover { background: #04182D; }
+
+    /* ── PROGRESS ── */
+    .step-label {
+      font-size: 12px;
+      font-weight: 400;
+      color: #A0A0A0;
+      letter-spacing: 0.02em;
+      white-space: nowrap;
+    }
+
+    /* ── PAGE 4: FILTER ── */
+    .filter-page {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .filter-page__header {
+      flex-shrink: 0;
+      padding-bottom: 20px;
+    }
+
+    .filter-page__title {
+      font-size: clamp(18px, 2vw, 26px);
+      font-weight: 700;
+      color: #04182D;
+      letter-spacing: -0.02em;
+      margin-bottom: 4px;
+    }
+
+    .filter-badge {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 600;
+      color: #747474;
+      background: #F0F2F5;
+      border-radius: 20px;
+      padding: 2px 10px;
+      margin-left: 10px;
+      vertical-align: middle;
+      letter-spacing: 0.04em;
+    }
+
+    .filter-page__sub {
+      font-size: 14px;
+      font-weight: 300;
+      color: #747474;
+    }
+
+    .filter-scroll {
+      flex: 1;
+      overflow-y: auto;
+      min-height: 0;
+      padding-right: 4px;
+    }
+
+    .filter-scroll::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .filter-scroll::-webkit-scrollbar-track { background: transparent; }
+    .filter-scroll::-webkit-scrollbar-thumb {
+      background: #D6D6D6;
+      border-radius: 2px;
+    }
+
+    .filter-section {
+      margin-bottom: 28px;
+    }
+
+    .filter-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+      margin-bottom: 28px;
+    }
+
+    .filter-label {
+      font-size: 16px;
+      font-weight: 600;
+      color: #04182D;
+      margin-bottom: 10px;
+      display: block;
+    }
+
+    /* Dropdown */
+    .filter-select {
+      width: 100%;
+      padding: 12px 16px;
+      border: 1.5px solid #D6D6D6;
+      border-radius: 10px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 400;
+      color: #04182D;
+      background: #fff;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23747474' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 16px center;
+      cursor: pointer;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    .filter-select:focus { border-color: #093E78; }
+
+    /* Aktiv-toggle */
+    .active-toggle {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      padding: 14px 18px;
+      border: 1.5px solid #D6D6D6;
+      border-radius: 10px;
+      background: #fff;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .active-toggle.on { border-color: #093E78; background: #F0F5FF; }
+
+    .toggle-switch {
+      width: 40px;
+      height: 22px;
+      border-radius: 11px;
+      background: #D6D6D6;
+      position: relative;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .toggle-switch.on { background: #093E78; }
+
+    .toggle-switch::after {
+      content: '';
+      position: absolute;
+      width: 16px;
+      height: 16px;
+      border-radius: 50%;
+      background: #fff;
+      top: 3px;
+      left: 3px;
+      transition: left 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .toggle-switch.on::after { left: 21px; }
+
+    .active-toggle-text strong {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      color: #04182D;
+    }
+
+    .active-toggle-text span {
+      font-size: 12px;
+      font-weight: 300;
+      color: #747474;
+    }
+
+    /* Bostadstyper */
+    .type-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .type-btn {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 16px;
+      border: 1.5px solid #D6D6D6;
+      border-radius: 10px;
+      background: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      color: #04182D;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s, color 0.15s;
+      text-align: left;
+    }
+
+    .type-btn:hover { border-color: #093E78; }
+
+    .type-btn.active {
+      border-color: #093E78;
+      background: #EEF3FB;
+      color: #093E78;
+    }
+
+    .type-btn svg { flex-shrink: 0; }
+
+    /* Range sliders */
+    .slider-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin-bottom: 28px;
+    }
+
+    .slider-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .slider-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+    }
+
+    .slider-value {
+      font-size: 12px;
+      font-weight: 400;
+      color: #747474;
+    }
+
+    .range-track {
+      position: relative;
+      height: 4px;
+      background: #E4E9F0;
+      border-radius: 2px;
+      margin: 6px 0;
+    }
+
+    .range-fill {
+      position: absolute;
+      height: 100%;
+      background: #093E78;
+      border-radius: 2px;
+    }
+
+    input[type="range"] {
+      position: absolute;
+      width: 100%;
+      top: 50%;
+      transform: translateY(-50%);
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      pointer-events: none;
+      margin: 0;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      border: 2px solid #093E78;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.15);
+      pointer-events: all;
+      cursor: pointer;
+    }
+
+    /* Nyproduktion */
+    .segmented {
+      display: inline-flex;
+      border: 1.5px solid #D6D6D6;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .seg-btn {
+      padding: 10px 20px;
+      border: none;
+      background: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      color: #04182D;
+      cursor: pointer;
+      border-right: 1.5px solid #D6D6D6;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .seg-btn:last-child { border-right: none; }
+
+    .seg-btn.active {
+      background: #093E78;
+      color: #fff;
+    }
+
+    /* ── DROPDOWN ROW ── */
+    .dropdown-row {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .dropdown-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .dropdown-pair {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+
+    .dropdown-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .dropdown-sublabel {
+      font-size: 14px;
+      font-weight: 400;
+      color: #747474;
+    }
+
+    /* ── CONTACT FORM ── */
+    .contact-fields {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      margin-bottom: 32px;
+      max-width: 480px;
+    }
+
+    .field-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .text-input {
+      border: 1.5px solid #D6D6D6;
+      border-radius: 10px;
+      padding: 13px 16px;
+      font-family: 'Poppins', sans-serif;
+      font-size: 14px;
+      font-weight: 300;
+      color: #04182D;
+      outline: none;
+      transition: border-color 0.15s;
+      background: #fff;
+    }
+
+    .text-input::placeholder { color: #A0A0A0; }
+    .text-input:focus { border-color: #093E78; }
+
+    .required { color: #FF5E00; }
+
+    .checkbox-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      margin-bottom: 0;
+    }
+
+    .checkbox-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 16px 0;
+      cursor: pointer;
+    }
+
+    .checkbox-item input[type="checkbox"] {
+      display: none;
+    }
+
+    .checkbox-box {
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid #D6D6D6;
+      border-radius: 5px;
+      flex-shrink: 0;
+      margin-top: 2px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s, background 0.15s;
+      background: #fff;
+    }
+
+    .checkbox-item input:checked + .checkbox-box {
+      background: #093E78;
+      border-color: #093E78;
+    }
+
+    .checkbox-item input:checked + .checkbox-box::after {
+      content: '';
+      width: 10px;
+      height: 6px;
+      border-left: 2px solid #fff;
+      border-bottom: 2px solid #fff;
+      transform: rotate(-45deg) translateY(-1px);
+      display: block;
+    }
+
+    .checkbox-text {
+      font-size: 14px;
+      font-weight: 400;
+      color: #04182D;
+      line-height: 1.5;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .checkbox-text strong {
+      font-size: 14px;
+      font-weight: 600;
+      color: #04182D;
+    }
+
+    .checkbox-text span {
+      font-size: 13px;
+      font-weight: 300;
+      color: #747474;
+    }
+
+    .checkbox-link {
+      color: #093E78;
+      text-decoration: underline;
+    }
+
+    .checkbox-divider {
+      border-top: 1px solid #E4E9F0;
+    }
+
+    .filter-divider {
+      border: none;
+      border-top: 1px solid #E4E9F0;
+      margin-bottom: 24px;
+    }
+
+    /* ── PROGRESS STEPPER ── */
+    .stepper {
+      display: flex;
+      align-items: flex-start;
+      width: 100%;
+      max-width: 800px;
+      margin-bottom: 28px;
+    }
+
+    .stepper__step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      flex: 1;
+      position: relative;
+    }
+
+    .stepper__step:first-child { align-items: flex-start; }
+    .stepper__step:last-child  { align-items: flex-end; }
+
+    /* Linje mellan stegen */
+    .stepper__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: calc(50% + 20px);
+      right: calc(-50% + 20px);
+      height: 2px;
+      background: #ededed;
+      z-index: 0;
+      transition: background 0.3s ease;
+    }
+
+    /* Första steget: linje startar från höger om pricken */
+    .stepper__step:first-child::after {
+      left: 32px;
+      right: calc(-100% + 16px);
+    }
+
+    /* Mittersta steget: linje når fram till steg 3:s högerkant */
+    .stepper__step:nth-child(2):not(:last-child)::after {
+      left: calc(50% + 20px);
+      right: calc(-100% + 16px);
+    }
+
+    .stepper__step--done:not(:last-child)::after {
+      background: #093e78;
+    }
+
+    /* Cirkel */
+    .stepper__dot {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 600;
+      position: relative;
+      z-index: 1;
+      transition: background 0.2s, border-color 0.2s, color 0.2s;
+      flex-shrink: 0;
+    }
+
+    /* Gjort steg */
+    .stepper__step--done .stepper__dot {
+      background: #093e78;
+      color: #fff;
+      border: 2px solid #093e78;
+    }
+
+    /* Aktivt steg */
+    .stepper__step--active .stepper__dot {
+      background: #fff;
+      color: #093e78;
+      border: 2.5px solid #093e78;
+      box-shadow: none;
+    }
+
+    /* Kommande steg */
+    .stepper__step--future .stepper__dot {
+      background: #fff;
+      color: #b0b0b0;
+      border: 2px solid #d6d6d6;
+    }
+
+    /* Etikett */
+    .stepper__label {
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.01em;
+      text-align: center;
+      white-space: nowrap;
+      transition: color 0.2s;
+    }
+
+    .stepper__step--done   .stepper__label { color: #093e78; }
+    .stepper__step--active .stepper__label { color: #04182d; font-weight: 600; }
+    .stepper__step--future .stepper__label { color: #b0b0b0; }
+
+    /* ── SEARCH FIELD ── */
+    .search-field {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border: 1.5px solid #D6D6D6;
+      border-radius: 10px;
+      padding: 0 16px;
+      background: #fff;
+      transition: border-color 0.15s;
+    }
+
+    .search-field:focus-within {
+      border-color: #093E78;
+    }
+
+    .search-field svg {
+      color: #969696;
+      flex-shrink: 0;
+    }
+
+    .search-field input {
+      flex: 1;
+      border: none;
+      outline: none;
+      font-family: 'Poppins', sans-serif;
+      font-size: 15px;
+      font-weight: 300;
+      color: #04182D;
+      padding: 14px 0;
+      background: transparent;
+    }
+
+    .search-field input::placeholder {
+      color: #A0A0A0;
+    }
+
+    /* ── AREA LAYOUT (sida 3) ── */
+    .area-layout {
+      width: 100%;
+      max-width: 800px;
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 56px - 48px - 140px);
+    }
+
+    .area-top {
+      flex-shrink: 0;
+      padding-bottom: 20px;
+    }
+
+    .area-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 32px;
+    }
+
+    .area-map {
+      flex: 1;
+      min-height: 300px;
+      border-radius: 16px;
+      overflow: hidden;
+    }
+
+    /* ── FOOTER ── */
+    .footer {
+      background: #FCFCFC;
+      border-top: 1px solid #E0E0E0;
+    }
+    .footer__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 56px 48px 48px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1.2fr;
+      gap: 48px;
+    }
+    .footer__heading {
+      font-size: 16px;
+      font-weight: 700;
+      color: #04182D;
+      margin: 0 0 20px;
+    }
+    .footer__list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .footer__list a {
+      font-size: 14px;
+      color: #04182D;
+      text-decoration: none;
+      transition: opacity 0.15s;
+    }
+    .footer__list a:hover { opacity: 0.6; }
+    .footer__newsletter-text {
+      font-size: 14px;
+      color: #04182D;
+      line-height: 1.6;
+      margin: 0 0 20px;
+    }
+    .footer__link-word { color: #093E78; }
+    .footer__newsletter-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #093E78;
+      color: #FCFCFC;
+      font-family: inherit;
+      font-size: 15px;
+      font-weight: 600;
+      padding: 14px 28px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: background 0.15s;
+      width: 100%;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    .footer__newsletter-btn:hover { background: #04182D; }
+    .footer__bottom { border-top: 1px solid #E0E0E0; }
+    .footer__bottom-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      font-weight: 700;
+      color: #04182D;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+    }
+    .footer__social { display: flex; gap: 12px; }
+    .footer__social-link {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: #04182D;
+      color: #FCFCFC;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+    .footer__social-link:hover { background: #093E78; }
+    @media (max-width: 860px) {
+      .footer__inner { grid-template-columns: 1fr 1fr; padding: 40px 24px; }
+      .footer__bottom-inner { padding: 20px 24px; }
+    }
+    @media (max-width: 600px) {
+      .footer__inner { grid-template-columns: 1fr; gap: 32px; }
+    }
+
+    /* ── MAP PLACEHOLDER ── */
+    .map-placeholder {
+      background: #D0D8E4 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .map-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      font-weight: 400;
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header__inner">
+      <div class="header__logo">
+        <img src="logo.avif" alt="Bovision" style="height: 32px; display: block; filter: brightness(0) invert(1);">
+      </div>
+      <nav class="header__nav">
+        <a href="#" class="nav-link">Sök bostad</a>
+        <a href="#" class="nav-link">
+          Tjänster
+          <svg width="12" height="8" viewBox="0 0 12 8" fill="none">
+            <path d="M1 1l5 5 5-5" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </a>
+        <a href="#" class="nav-link">Inspiration</a>
+      </nav>
+      <div class="header__actions">
+        <a href="#" class="login-link">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="8" r="4" stroke="white" stroke-width="2"/>
+            <path d="M4 20c0-4 3.6-7 8-7s8 3 8 7" stroke="white" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          Logga in
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main style="position: relative;">
+
+
+    <!-- Sida 1 -->
+    <section class="page" id="page1" style="align-items: flex-start; padding-top: 140px;">
+      <div class="split">
+        <div class="split__left">
+          <div>
+            <h1 class="hero__title">Skapa en bostadsbevakning – vi bevakar marknaden åt dig</h1>
+            <p class="hero__body">Vi håller koll på marknaden åt dig. När en bostad som matchar dina önskemål dyker upp får du ett mejl direkt.</p>
+            <div class="page__nav">
+              <button class="btn-next" onclick="goToPage('page1','page3')">
+                Gå vidare
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="split__right">
+          <img class="split__img" src="bild1.jpg" alt="Bostad">
+        </div>
+      </div>
+    </section>
+
+    <!-- Sida 3 -->
+    <section class="page page--hidden" id="page3" style="height: auto; min-height: calc(100vh - 56px);">
+      <div class="area-layout">
+        <div class="area-top">
+          <nav class="stepper" aria-label="Steg 1 av 3">
+            <div class="stepper__step stepper__step--active">
+              <div class="stepper__dot">1</div>
+              <span class="stepper__label">Område</span>
+            </div>
+            <div class="stepper__step stepper__step--future">
+              <div class="stepper__dot">2</div>
+              <span class="stepper__label">Kriterier</span>
+            </div>
+            <div class="stepper__step stepper__step--future">
+              <div class="stepper__dot">3</div>
+              <span class="stepper__label">Kontakt</span>
+            </div>
+          </nav>
+          <h2 class="steps__title" style="margin-bottom:16px;">Välj område</h2>
+          <div class="search-field">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="2"/>
+              <path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+            <input type="text" placeholder="Stad, område eller kommun…">
+          </div>
+        </div>
+        <div class="area-map map-placeholder">
+          <div class="map-inner">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+              <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z" fill="rgba(255,255,255,0.4)"/>
+            </svg>
+            <span>Karta laddas här</span>
+          </div>
+        </div>
+        <div class="page__nav" style="margin-top:20px;">
+          <button class="btn-back" onclick="goToPage('page3','page1')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Tillbaka
+          </button>
+          <button class="btn-next" onclick="goToPage('page3','page4')">
+            Gå vidare
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sida 4 -->
+    <section class="page page--hidden" id="page4" style="align-items: flex-start; padding-top: 48px; padding-bottom: 48px; height: auto; min-height: calc(100vh - 56px);">
+      <div class="filter-page">
+
+        <div class="filter-page__header">
+          <nav class="stepper" aria-label="Steg 2 av 3">
+            <div class="stepper__step stepper__step--done">
+              <div class="stepper__dot">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                  <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <span class="stepper__label">Område</span>
+            </div>
+            <div class="stepper__step stepper__step--active">
+              <div class="stepper__dot">2</div>
+              <span class="stepper__label">Kriterier</span>
+            </div>
+            <div class="stepper__step stepper__step--future">
+              <div class="stepper__dot">3</div>
+              <span class="stepper__label">Kontakt</span>
+            </div>
+          </nav>
+          <h2 class="filter-page__title">Kriterier <span class="filter-badge">Valfritt</span></h2>
+          <p class="filter-page__sub">Valfritt – lämna tomt för att bevaka allt i området.</p>
+        </div>
+
+
+        <div class="filter-scroll">
+        <div class="type-grid">
+          <button class="type-btn active" onclick="toggleType(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="3" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="3" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/><rect x="14" y="14" width="7" height="7" rx="1" stroke="currentColor" stroke-width="1.8"/></svg>
+            Alla
+          </button>
+          <button class="type-btn" onclick="toggleType(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="8" width="18" height="13" rx="1" stroke="currentColor" stroke-width="1.8"/><path d="M8 21V13h8v8" stroke="currentColor" stroke-width="1.8"/><path d="M2 9l10-6 10 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Lägenhet
+          </button>
+          <button class="type-btn" onclick="toggleType(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 21V10l9-7 9 7v11H3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke="currentColor" stroke-width="1.8"/></svg>
+            Villa
+          </button>
+          <button class="type-btn" onclick="toggleType(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M2 21V11l6-5 6 5v10H2z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M14 21V13l4-3 4 3v8h-8z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            Par/Kedje/Radhus
+          </button>
+          <button class="type-btn" onclick="toggleType(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 21V9l9-6 9 6v12H3z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M3 13h18" stroke="currentColor" stroke-width="1.8"/><path d="M9 21v-5h6v5" stroke="currentColor" stroke-width="1.8"/></svg>
+            Gods och gårdar
+          </button>
+          <button class="type-btn" onclick="toggleType(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M4 21V11l8-7 8 7v10H4z" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 21v-5h6v5" stroke="currentColor" stroke-width="1.8"/><path d="M12 4V2M8 5l-2-2M16 5l2-2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Fritidshus
+          </button>
+          <button class="type-btn" onclick="toggleType(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M3 18c3-4 5-8 9-8s6 4 9 8" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M3 21h18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+            Tomt
+          </button>
+          <button class="type-btn" onclick="toggleType(this)">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M3 9h18M9 21V9" stroke="currentColor" stroke-width="1.8"/></svg>
+            Övriga
+          </button>
+        </div>
+
+        <div class="dropdown-row">
+
+          <div class="dropdown-group">
+            <label class="filter-label">Utropspris</label>
+            <div class="dropdown-pair">
+              <div class="dropdown-wrap">
+                <span class="dropdown-sublabel">Minst</span>
+                <select class="filter-select">
+                  <option>Visa allt</option>
+                  <option>500 000 kr</option>
+                  <option>1 000 000 kr</option>
+                  <option>2 000 000 kr</option>
+                  <option>3 000 000 kr</option>
+                  <option>5 000 000 kr</option>
+                </select>
+              </div>
+              <div class="dropdown-wrap">
+                <span class="dropdown-sublabel">Upp till</span>
+                <select class="filter-select">
+                  <option>Visa allt</option>
+                  <option>1 000 000 kr</option>
+                  <option>2 000 000 kr</option>
+                  <option>3 000 000 kr</option>
+                  <option>5 000 000 kr</option>
+                  <option>10 000 000 kr</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <label class="filter-label">Rum</label>
+            <div class="dropdown-pair">
+              <div class="dropdown-wrap">
+                <span class="dropdown-sublabel">Minst</span>
+                <select class="filter-select">
+                  <option>Visa allt</option>
+                  <option>1 rum</option>
+                  <option>2 rum</option>
+                  <option>3 rum</option>
+                  <option>4 rum</option>
+                  <option>5 rum</option>
+                </select>
+              </div>
+              <div class="dropdown-wrap">
+                <span class="dropdown-sublabel">Upp till</span>
+                <select class="filter-select">
+                  <option>Visa allt</option>
+                  <option>2 rum</option>
+                  <option>3 rum</option>
+                  <option>4 rum</option>
+                  <option>5 rum</option>
+                  <option>6+ rum</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <label class="filter-label">Boarea</label>
+            <div class="dropdown-pair">
+              <div class="dropdown-wrap">
+                <span class="dropdown-sublabel">Minst</span>
+                <select class="filter-select">
+                  <option>Visa allt</option>
+                  <option>20 m²</option>
+                  <option>40 m²</option>
+                  <option>60 m²</option>
+                  <option>80 m²</option>
+                  <option>100 m²</option>
+                </select>
+              </div>
+              <div class="dropdown-wrap">
+                <span class="dropdown-sublabel">Upp till</span>
+                <select class="filter-select">
+                  <option>Visa allt</option>
+                  <option>50 m²</option>
+                  <option>75 m²</option>
+                  <option>100 m²</option>
+                  <option>150 m²</option>
+                  <option>200 m²</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="dropdown-group">
+            <label class="filter-label">Byggår</label>
+            <div class="dropdown-pair">
+              <div class="dropdown-wrap">
+                <span class="dropdown-sublabel">Minst</span>
+                <select class="filter-select">
+                  <option>Visa allt</option>
+                  <option>1900</option>
+                  <option>1950</option>
+                  <option>1970</option>
+                  <option>1990</option>
+                  <option>2000</option>
+                  <option>2010</option>
+                </select>
+              </div>
+              <div class="dropdown-wrap">
+                <span class="dropdown-sublabel">Upp till</span>
+                <select class="filter-select">
+                  <option>Visa allt</option>
+                  <option>1950</option>
+                  <option>1970</option>
+                  <option>1990</option>
+                  <option>2000</option>
+                  <option>2010</option>
+                  <option>2026</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+        </div>
+
+        <div class="dropdown-group" style="margin-top:20px; margin-bottom:32px; max-width:320px;">
+          <label class="filter-label">Nyproduktion</label>
+          <select class="filter-select">
+            <option>Inkludera</option>
+            <option>Exkludera</option>
+            <option>Visa endast</option>
+          </select>
+        </div>
+
+        <div class="page__nav" style="flex-shrink:0; margin-top:0;">
+          <button class="btn-back" onclick="goToPage('page4','page3')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+              <path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Tillbaka
+          </button>
+          <button class="btn-next" onclick="goToPage('page4','page5')">
+            Gå vidare
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+              <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Sida 5 -->
+    <section class="page page--hidden" id="page5" style="align-items: center; padding-top: 52px; padding-bottom: 48px;">
+      <div style="width:100%; max-width:800px; display:flex; flex-direction:column;">
+
+        <nav class="stepper" aria-label="Steg 3 av 3">
+          <div class="stepper__step stepper__step--done">
+            <div class="stepper__dot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="stepper__label">Område</span>
+          </div>
+          <div class="stepper__step stepper__step--done">
+            <div class="stepper__dot">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
+                <path d="M5 13l4 4L19 7" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <span class="stepper__label">Kriterier</span>
+          </div>
+          <div class="stepper__step stepper__step--active">
+            <div class="stepper__dot">3</div>
+            <span class="stepper__label">Kontakt</span>
+          </div>
+        </nav>
+        <h2 class="filter-page__title" style="margin-bottom:0;">Kontaktuppgifter</h2>
+        <p class="filter-page__sub" style="margin-bottom:24px;">Fyll i dina kontaktuppgifter så bevakar vi marknaden åt dig, och du får ett mail så snart din bevakning ger träff.</p>
+
+        <div>
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:16px;">
+            <div class="field-wrap">
+              <label class="filter-label">För- och efternamn <span class="required">*</span></label>
+              <input class="text-input" type="text" placeholder="För- och efternamn">
+            </div>
+            <div class="field-wrap">
+              <label class="filter-label">E-postadress <span class="required">*</span></label>
+              <input class="text-input" type="email" placeholder="Skriv din e-postadress">
+            </div>
+          </div>
+          <p style="font-size:14px; font-weight:300; color:#747474; margin-top:12px; margin-bottom:32px;">Har du ett konto? <a href="#" style="color:#093E78; text-decoration:underline; font-weight:500;">Logga in</a></p>
+
+          <div style="border: 1.5px solid #E4E9F0; border-radius: 12px; overflow: hidden; margin-bottom: 12px; background: #F7F9FC;">
+            <label class="checkbox-item" style="padding: 16px 18px; margin: 0; cursor: pointer;">
+              <input type="checkbox">
+              <span class="checkbox-box"></span>
+              <div class="checkbox-text">
+                <strong>Vill du ha rådgivning?</strong>
+                <span>Jag vill få rådgivning av en fastighetsmäklare verksam i området jag söker bostad.</span>
+              </div>
+            </label>
+            <div class="checkbox-divider" style="margin: 0 18px;"></div>
+            <label class="checkbox-item" style="padding: 16px 18px; margin: 0; cursor: pointer;">
+              <input type="checkbox">
+              <span class="checkbox-box"></span>
+              <div class="checkbox-text">
+                <strong>Nyhetsbrev</strong>
+                <span>Jag vill gärna få Bovisions nyhetsbrev med tips, inspiration och erbjudanden via e-post.</span>
+              </div>
+            </label>
+          </div>
+
+          <div class="checkbox-list">
+            <label class="checkbox-item">
+              <input type="checkbox">
+              <span class="checkbox-box"></span>
+              <span class="checkbox-text" style="display:inline;">Jag godkänner Bovisions <a href="#" class="checkbox-link">Integritetspolicy</a><span class="required"> *</span></span>
+            </label>
+          </div>
+
+          <div class="page__nav" style="margin-top:16px; margin-bottom: 32px;">
+            <button class="btn-back" onclick="goToPage('page5','page4')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                <path d="M19 12H5M11 18l-6-6 6-6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              Tillbaka
+            </button>
+            <button class="btn-next" onclick="goToPage('page5','page6')">
+              Skapa bevakning
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Sida 6 – Bekräftelse -->
+    <section class="page page--hidden" id="page6">
+      <div style="width:100%; max-width:800px; position:relative; border-radius:16px; overflow:hidden; height:480px;">
+        <img src="bild1.jpg" alt="" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position: center 30%;">
+        <div style="position:absolute; inset:0; background: linear-gradient(135deg, rgba(4,24,45,0.82) 0%, rgba(9,62,120,0.70) 100%);"></div>
+        <div style="position:absolute; inset:0; display:flex; align-items:center; justify-content:center;">
+          <div style="max-width:480px; text-align:center; padding: 48px 32px; color:#fff;">
+            <div style="width:52px; height:52px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; margin: 0 auto 24px;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                <path d="M5 13l4 4L19 7" stroke="#093e78" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <h2 style="font-size: clamp(22px, 2.4vw, 30px); font-weight:700; letter-spacing:-0.02em; margin-bottom:12px;">Din bevakning är igång!</h2>
+            <p style="font-size:18px; font-weight:300; opacity:0.9; line-height:1.6; margin-bottom:16px;">Vi hör av oss så fort du får en match.</p>
+            <p style="font-size:14px; font-weight:300; opacity:0.82; line-height:1.7; margin-bottom:36px;">Ett mejl med dina inloggningsuppgifter är på väg till dig. Du kan sedan logga in via länken för att se, och ta bort, din bevakning när du önskar.</p>
+            <button onclick="goToPage('page6','page1')" style="display:inline-flex; align-items:center; background:#fff; color:#04182D; font-family:'Poppins',sans-serif; font-size:15px; font-weight:600; padding:13px 32px; border-radius:10px; border:none; cursor:pointer; transition:opacity 0.15s;" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">
+              Klar
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__col">
+        <h3 class="footer__heading">Tjänster</h3>
+        <ul class="footer__list">
+          <li><a href="#">Sök bostad</a></li>
+          <li><a href="#">Sök mäklare</a></li>
+          <li><a href="#">För mäklare</a></li>
+          <li><a href="#">För säljare</a></li>
+          <li><a href="#">Köpa nyproduktion</a></li>
+          <li><a href="#">För bostadsutvecklare</a></li>
+          <li><a href="#">Bostadsbevakning</a></li>
+          <li><a href="#">Annonsering och reklam</a></li>
+          <li><a href="#">Inspiration</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__heading">Bovision</h3>
+        <ul class="footer__list">
+          <li><a href="#">Om oss</a></li>
+          <li><a href="#">Press</a></li>
+          <li><a href="#">Kontakta oss</a></li>
+          <li><a href="#">Lediga tjänster</a></li>
+          <li><a href="#">Vanliga frågor</a></li>
+          <li><a href="#">Ordlista</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__heading">Integritet</h3>
+        <ul class="footer__list">
+          <li><a href="#">Personuppgiftspolicy</a></li>
+          <li><a href="#">Cookies</a></li>
+          <li><a href="#">Säljarvillkor</a></li>
+          <li><a href="#">Annonsvillkor</a></li>
+          <li><a href="#">Reklamvillkor</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h3 class="footer__heading">Få vårt nyhetsbrev!</h3>
+        <p class="footer__newsletter-text">Vi bjuder på kunskap, råd och <span class="footer__link-word">inspiration</span> kring fastigheter, bostäder, hus och <span class="footer__link-word">hem</span> direkt till din inkorg.</p>
+        <a href="#" class="footer__newsletter-btn">
+          Klicka här
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+            <path d="M22 2L11 13" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M22 2L15 22L11 13L2 9L22 2Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <div class="footer__bottom-inner">
+        <a href="#" class="footer__logo">
+          <img src="logo.avif" alt="Bovision" style="height: 28px; display: block;">
+          <span>BOVISION</span>
+        </a>
+        <div class="footer__social">
+          <a href="#" class="footer__social-link" aria-label="Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="5" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg>
+          </a>
+          <a href="#" class="footer__social-link" aria-label="Facebook">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#" class="footer__social-link" aria-label="TikTok">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M9 12a4 4 0 104 4V4a5 5 0 005 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
+          <a href="#" class="footer__social-link" aria-label="LinkedIn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><rect x="2" y="2" width="20" height="20" rx="4" stroke="currentColor" stroke-width="2"/><path d="M7 10v7M7 7v.01M12 17v-4a2 2 0 014 0v4M12 10v7" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    function goToPage(from, to) {
+      document.getElementById(from).classList.add('page--hidden');
+      const toEl = document.getElementById(to);
+      toEl.classList.remove('page--hidden');
+      toEl.classList.remove('page--visible');
+      void toEl.offsetWidth; // trigga reflow för att starta om animationen
+      toEl.classList.add('page--visible');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+
+    // Toggle aktiv
+    function toggleActive() {
+      const t = document.getElementById('activeToggle');
+      const s = document.getElementById('toggleSwitch');
+      t.classList.toggle('on');
+      s.classList.toggle('on');
+    }
+
+    // Bostadstyp
+    function toggleType(btn) {
+      btn.classList.toggle('active');
+    }
+
+    // Segmented
+    function setSeg(btn) {
+      btn.closest('.segmented').querySelectorAll('.seg-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    }
+
+    // Range sliders
+    function initSlider(minId, maxId, fillId, valId, min, max, unit, format) {
+      const minEl = document.getElementById(minId);
+      const maxEl = document.getElementById(maxId);
+      const fill  = document.getElementById(fillId);
+      const val   = document.getElementById(valId);
+
+      function update() {
+        const lo = parseInt(minEl.value);
+        const hi = parseInt(maxEl.value);
+        if (lo > hi) { minEl.value = hi; }
+        if (hi < lo) { maxEl.value = lo; }
+        const pLo = ((parseInt(minEl.value) - min) / (max - min)) * 100;
+        const pHi = ((parseInt(maxEl.value) - min) / (max - min)) * 100;
+        fill.style.left  = pLo + '%';
+        fill.style.width = (pHi - pLo) + '%';
+        val.textContent  = format(parseInt(minEl.value), parseInt(maxEl.value));
+      }
+
+      minEl.addEventListener('input', update);
+      maxEl.addEventListener('input', update);
+      update();
+    }
+
+    initSlider('priceMin','priceMax','priceFill','priceVal', 0, 20000000, 'kr',
+      (lo, hi) => lo.toLocaleString('sv') + ' – ' + (hi >= 20000000 ? '20 000 000+' : hi.toLocaleString('sv')) + ' kr');
+
+    initSlider('ytaMin','ytaMax','ytaFill','ytaVal', 20, 300, 'm²',
+      (lo, hi) => lo + ' – ' + (hi >= 300 ? '300+' : hi) + ' m²');
+
+    initSlider('rumMin','rumMax','rumFill','rumVal', 1, 7, 'rum',
+      (lo, hi) => lo + ' – ' + (hi >= 7 ? '7+' : hi) + ' rum');
+
+    initSlider('arMin','arMax','arFill','arVal', 1700, 2026, '',
+      (lo, hi) => lo + ' – ' + (hi >= 2026 ? '2026+' : hi));
+  </script>
+
+</body>
+</html>
